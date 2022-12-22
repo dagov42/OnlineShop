@@ -1,0 +1,65 @@
+<div th:fragment="login(path)" xmlns:th="http://www.thymeleaf.org">
+    <form method="post" th:attr="action=${path}">
+        <div class="container">
+            <div th:switch="${path}">
+                <h4 th:case="'/registration'">Регистрация</h4>
+                <h4 th:case="'/login'">Вход в личный кабинет</h4>
+            </div>
+            <hr/>
+            <div class="form-group row" style="margin: 5px;" data-th-if="${path} == '/registration'">
+                <label class="col-sm-3 col-form-label">Электронная почта: </label>
+                <div class="col-sm-4">
+                    <input type="email" name="email" data-th-value="${user} ? ${user.email} : ''" class="form-control"
+                           th:classappend="${emailError} ? ' is-invalid'"/>
+                    <div th:if="${emailError}" class="invalid-feedback" data-th-text="${emailError}"></div>
+                </div>
+            </div>
+
+            <div class="form-group row " style="margin: 5px;">
+                <label class="col-sm-3 col-form-label">Имя пользователя: </label>
+                <div class="col-sm-4">
+                    <input type="text" name="username" data-th-value="${user} ? ${user.username} : ''"
+                           class="form-control" data-th-classappend="${usernameError} ? ' is-invalid'"/>
+                    <div th:if="${usernameError}" class="invalid-feedback" data-th-text="${usernameError}"></div>
+                </div>
+            </div>
+
+            <div class="form-group row" style="margin: 5px;">
+                <label class="col-sm-3 col-form-label">Пароль: </label>
+                <div class="col-sm-4">
+                    <input type="password" name="password" class="form-control"
+                           data-th-classappend="${passwordError} ? ' is-invalid'"/>
+                    <div data-th-if="${passwordError}" class="invalid-feedback" data-th-text="${passwordError}"></div>
+                </div>
+            </div>
+
+            <div class="form-group row" style="margin: 5px;" data-th-if="${path} == '/registration'">
+                <label class="col-sm-3 col-form-label">Повторите пароль: </label>
+                <div class="col-sm-4">
+                        <input type="password" name="password2" class="form-control"
+                               data-th-classappend="${password2Error} ? ' is-invalid'"/>
+                </div>
+            </div>
+
+            <div class="form-group row"  data-th-if="${path} == '/registration'">
+                <button type="submit" class="btn btn-dark mx-3 btn-reg">Зарегистрироваться</button>
+                <button type="button" class="btn btn-dark mx-3 btn-reg" data-th-onclick="|window.location.href='/login'|">Назад</button>
+            </div>
+
+            <div class="form-group row d-md-flex justify-content-md-center" style="margin-top: 2%" data-th-if="${path} == '/login'">
+                <button type="submit" class="btn btn-dark mx-3 btn-reg">Вход</button>
+                <button type="button" class="btn btn-dark mx-3 btn-reg" data-th-onclick="|window.location.href='/registration'|">
+                    <a>Регистрация</a>
+                </button>
+                <button type="button" class="btn btn-dark mx-3 btn-reg" data-th-onclick="|window.location.href='/reset'|">
+                    <a>Забыли пароль?</a>
+                </button>
+            </div>
+
+            <div style="margin: 5px;align-items: center" data-th-if="${path} == '/registration'">
+                <div class="g-recaptcha" data-sitekey="6Lc5cLkZAAAAAN8mFk85HQieB9toPcWFoW0RXCNR"></div>
+                <div th:if="${captchaError}" class="alert-danger" data-th-text="${captchaError}" role="alert"></div>
+            </div>
+        </div>
+    </form>
+</div>

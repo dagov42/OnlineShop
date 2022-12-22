@@ -1,0 +1,107 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="parts/common :: head"></head>
+
+<body>
+<div th:insert="~{parts/common :: scripts}"></div>
+<div th:insert="parts/common :: navbar"></div>
+
+<div id="container">
+    <div class="container pb-5">
+        <div class="row">
+
+            <div class="col-md-5">
+                <div>
+                    <img th:src="@{/img/{path} (path = ${candle.getFilename()})}" class="rounded mx-auto w-100">
+                </div>
+            </div>
+
+            <div class="col-md-7">
+                <h2 th:text="${candle.getCandleTitle()}"></h2>
+                <p>Код товара: <span th:text="${candle.getId()}"></span></p>
+                <p style="color: #54C0A1">Есть в наличии</p>
+
+                <div class="row ml-1">
+                    <h6 class="mr-5"><span id="price" style="font-size: large; text-align: center" th:text="${candle.getPrice()}"></span> руб.</h6>
+
+                    <form action="/cart/add" method="post">
+
+                        <div class="button-row price"><label class="radio"> <input type="radio" id="checked_" onclick="myFunction(this)" name="size1" th:value="${candle.getPrice()}" checked ='checked'> <span>
+                                        <div class="button-row" style="font-size: large; text-align: center" th:text="${candle.getVolume()} + ' мл.'"><b></b></div>
+                            </a>
+                                    </span> </label> <label class="radio"> <input type="radio" onclick="myFunction(this)" name="size1" th:value="${candle.getAnotherPrice()}"> <span>
+                                        <div class="button-row" style="font-size: large; text-align: center" th:text="${candle.getAnotherVolume()} + ' мл.'"><b></b></div>
+                            </a>
+                                    </span> </label>
+                        </div>
+                        <button type="submit" name="add" class="btn btn-dark mx-3" style="width: 17vw;height: 7vh;"
+                                th:value="${candle.getId()}">В корзину
+                        </button>
+                    </form>
+
+                </div>
+                <br>
+                <table class="table">
+                    <tbody>
+                    <tr>
+                        <td>Аромат:</td>
+                        <td th:text="${candle.getFragranceNotes()}"></td>
+                    </tr>
+                    <tr>
+                        <td>Описание:</td>
+                        <td th:text="${candle.getDescription()}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer th:insert="~{parts/common :: footer}"></footer>
+</body>
+</html>
+
+<script>
+    function myFunction(obj) {
+        document.getElementById("price").innerHTML = obj.value;
+    }
+    jQuery(document).ready(function(){
+        // This button will increment the value
+        $('.qtyplus').click(function(e){
+            // Stop acting like a button
+            e.preventDefault();
+            // Get the field name
+            fieldName = $(this).attr('field');
+            // Get its current value
+            var currentVal = parseInt($('input[name='+fieldName+']').val());
+            // If is not undefined
+            if (!isNaN(currentVal)) {
+                // Increment
+                $('input[name='+fieldName+']').val(currentVal + 1);
+            } else {
+                // Otherwise put a 0 there
+                $('input[name='+fieldName+']').val(0);
+            }
+        });
+        // This button will decrement the value till 0
+        $(".qtyminus").click(function(e) {
+            // Stop acting like a button
+            e.preventDefault();
+            // Get the field name
+            fieldName = $(this).attr('field');
+            // Get its current value
+            var currentVal = parseInt($('input[name='+fieldName+']').val());
+            // If it isn't undefined or its greater than 0
+            if (!isNaN(currentVal) && currentVal > 0) {
+                // Decrement one
+                $('input[name='+fieldName+']').val(currentVal - 1);
+            } else {
+                // Otherwise put a 0 there
+                $('input[name='+fieldName+']').val(0);
+            }
+        });
+    });
+
+</script>
